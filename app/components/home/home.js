@@ -10,23 +10,34 @@ define((require) => {
             return {
                 searchValue: "",
                 customer: null,
+                errorSearch: false,
                 cy: null
             };
         },
 
         methods: {
             search(email) {
-                if(email) {
-                    dataService.getJourney(email)
+                if (email) {
+                    // ToDo: remove this if - it is for test purposes only
+                    if (email === "x") {
+                        this.errorSearch = true;
+                        return;
+                    }
+
+                    dataService.getJourneyByEmail(email)
                         .then((data) => {
                             this.customer = data;
                             console.log(data);
+                        })
+                        .catch(() => {
+                            this.errorSearch = true;
                         });
                 }
             },
 
             clearSearch() {
                 console.log("clear");
+                this.errorSearch = false;
                 this.searchValue = "";
                 this.customer = null;
             },
