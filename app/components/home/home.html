@@ -9,7 +9,7 @@
         <h3>
             <span style="width: 100%;" v-if="customer && !errorSearch" class="badge badge-success mb-2">{{customer.lead.details.firstName || "John"}} {{customer.lead.details.lastName || "Doe"}}</span>
             <span style="width: 100%;" v-if="!customer && !errorSearch" class="badge badge-info mb-2">No customer is selected</span>
-            <span style="width: 100%;" v-if="errorSearch" class="badge badge-danger mb-2">No customer with {{searchValue}} email</span>        
+            <span style="width: 100%;" v-if="errorSearch" class="badge badge-danger mb-2">No customer with {{searchValue}} email</span>
         </h3>
         <div class="pb-2">
             <b-button @click="clearSearch" variant="danger" :disabled="!customer && !errorSearch">
@@ -27,6 +27,19 @@
             <b-button @click="search(searchValue)" variant="success">
                 Search
             </b-button>
+        </div>
+    </div>
+    <div class="suggestions row m-0">
+        <div class="col-sm-6 col-xs-12 col-md-4 col-lg-3s p-0" v-for="index in [1, 2, 3, 4, 5, 6]">
+            <div class="card card-block m-1">
+                <h4 class="card-title">FirstName LastName</h4>
+                <h6 class="card-subtitle mb-2 text-muted">Email</h6>
+                <p class="card-text">Companu</p>
+                <p class="card-text">Country</p>
+                <b-button @click="search('FirstName LastName')" size="sm">
+                    Show in graph
+                </b-button>
+            </div>
         </div>
     </div>
 </div>
