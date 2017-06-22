@@ -1,24 +1,38 @@
 define((require) => {
     const _ = require("lodash");
+    const jquery = require("jquery");
     const cytoscape = require("cytoscape");
+    const cyqtip = require("cytoscape-qtip");
+
+    cyqtip(cytoscape, jquery);
+
     const stylesheets = JSON.parse(require("text!./graph-stylesheets.json"));
 
     const getEdgeId = (sourceId, targetId) => `${sourceId}_${targetId}`;
 
     return {
         createGraph(el, data) {
+            _.forEach(data.nodes, (node) => {
+                data.nodes[node.id] = node;
+            });
+
             const stylesheet = cytoscape.stylesheet();
 
             _.forEach(stylesheets, (styles, selector) => {
                 stylesheet.selector(selector).css(styles);
             });
 
-            return {
+            const graph = {
                 data,
                 cy: cytoscape({
                     container: el,
+
                     boxSelectionEnabled: false,
+                    userZoomingEnabled: false,
+                    userPanningEnabled: false,
+
                     style: stylesheet,
+
                     elements: {
                         nodes: _.map(data.nodes, (node) => ({
                             data: {
@@ -40,13 +54,16 @@ define((require) => {
                             };
                         })
                     },
+
                     layout: {
-                        name: "grid",
-                        directed: true,
-                        padding: 10
+                        name: "grid"
                     }
                 })
             };
+
+            this._addTooltips({ graph });
+
+            return graph;
         },
 
         showCustomerData(graph, { journey, predictions }) {
@@ -73,6 +90,53 @@ define((require) => {
         reset(graph) {
             graph.cy.$("*").removeClass("journey");
             graph.cy.$("*").removeClass("prediction");
+        },
+
+        _addTooltips({ graph }) {
+            _.forEach(graph.cy.nodes(), (node) => {
+                const outgoingEdges = node.connectedEdges();
+                const customers = _(outgoingEdges)
+                    .map((edge) => edge.data().persons)
+                    .sum();
+
+                node.qtip({
+                    content: {
+                        title: node.data().name,
+                        text: `
+                            Customers: ${customers}
+                        `
+                    },
+                    position: {
+                        my: "center left",
+                        at: "center right"
+                    },
+                    style: {
+                        classes: "qtip-bootstrap"
+                    }
+                });
+            });
+
+            _.forEach(graph.cy.edges(), (edge) => {
+                const customers = edge.data().persons;
+                const sourceNode = graph.data.nodes[edge.data().source].label;
+                const targetNode = graph.data.nodes[edge.data().target].label;
+
+                edge.qtip({
+                    content: {
+                        title: `${sourceNode} - ${targetNode}`,
+                        text: `
+                            Customers: ${customers}
+                        `
+                    },
+                    position: {
+                        my: "center left",
+                        at: "center right"
+                    },
+                    style: {
+                        classes: "qtip-bootstrap"
+                    }
+                });
+            });
         },
 
         _addClasses({ graph, elementIds, classes }) {

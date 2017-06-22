@@ -19,8 +19,7 @@
 /* graph */
 .graph {
     width: 100%;
-    max-width: 800px;
-    height: 500px;
-    border: 1px solid black;
-    overflow: hidden;
+    height: 600px;
+    overflow: visible;
+    margin: 0 auto;
 }
