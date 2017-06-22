@@ -1,13 +1,26 @@
 <div>
     <h5 style="text-align: center;" class="pb-2 pt-2">Home Content</h5>
     <div class="col-md-4">
+        <!--<b-card v-if="customer" class="mb-2" variant="primary">{{customer.lead.details.firstName || "John"}} {{customer.lead.details.lastName || "Doe"}}</b-card>
+        <b-card v-else class="mb-2" variant="primary">No customer is selected</b-card>-->
+        <h3>
+            <span style="width: 100%;" v-if="customer" class="badge badge-success mb-2">{{customer.lead.details.firstName || "John"}} {{customer.lead.details.lastName || "Doe"}}</span>
+            <span style="width: 100%;"  v-else class="badge badge-info mb-2">No customer is selected</span>
+        </h3>
+        <div class="pb-2">
+            <b-button @click="clearSearch" variant="danger" :disabled="!customer">
+                Reset
+            </b-button>
+        </div>
+    </div>
+    <div class="col-md-4">
         <div class="inner-addon right-addon">
             <i v-if="searchValue.length === 0" class="fa fa-search"></i>
             <i v-else class="fa fa-remove" v-on:click.capture="clearSearch"></i>
             <b-form-input v-model="searchValue" placeholder="Email..."></b-form-input>
         </div>
         <div class="pb-2 pt-2">
-            <b-button @click="search(searchValue)">
+            <b-button @click="search(searchValue)" variant="success">
                 Search
             </b-button>
         </div>

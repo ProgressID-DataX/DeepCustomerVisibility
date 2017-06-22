@@ -6,7 +6,8 @@ define((require) => {
         template,
         data() {
             return {
-                searchValue: ""
+                searchValue: "",
+                customer: null
             };
         },
 
@@ -14,13 +15,17 @@ define((require) => {
             search(email) {
                 if(email) {
                     dataService.getJourneyByEmail(email)
-                        .then((data) => { console.log(data); });
+                        .then((data) => { 
+                            this.customer = data; 
+                            console.log(data); 
+                        });
                 }
             },
 
             clearSearch() {
                 console.log("clear");
-                this.searchValue = string.empty;
+                this.searchValue = "";
+                this.customer = null;
             }
         }
     };
