@@ -12,7 +12,7 @@ define((require) => {
 
     const request = (endpoint, data) => {
         if (data) {
-            url = _.template(url)({ data });
+            endpoint = _.template(endpoint)({ data });
         }
 
         return reqwest({
