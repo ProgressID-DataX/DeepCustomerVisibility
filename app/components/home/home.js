@@ -9,14 +9,18 @@ define((require) => {
         data() {
             return {
                 searchValue: "",
-                customer: null,
                 errorSearch: false,
+                customer: null,
+                suggestions: [],
                 _graphInstance: null
             };
         },
 
         methods: {
             search(email) {
+                this.errorSearch = false;
+                this.searchValue = email;
+
                 if (email) {
                     // ToDo: remove this if - it is for test purposes only
                     if (email === "x") {
@@ -26,7 +30,8 @@ define((require) => {
 
                     dataService.getJourneyByEmail(email)
                         .then((data) => {
-                            this.customer = data;
+                            this.customer = data.lead.details;
+                            this.suggestions = data.lead.similarLeads;
                             console.log(data);
                         })
                         .catch(() => {
@@ -39,6 +44,7 @@ define((require) => {
                 this.errorSearch = false;
                 this.searchValue = "";
                 this.customer = null;
+                this.suggestions = [];
             }
         },
 

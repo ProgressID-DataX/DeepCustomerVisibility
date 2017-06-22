@@ -4,10 +4,8 @@
     <div class="graph" ref="graph"></div>
 
     <div class="col-md-4 pt-2">
-        <!--<b-card v-if="customer" class="mb-2" variant="primary">{{customer.lead.details.firstName || "John"}} {{customer.lead.details.lastName || "Doe"}}</b-card>
-        <b-card v-else class="mb-2" variant="primary">No customer is selected</b-card>-->
         <h3>
-            <span style="width: 100%;" v-if="customer && !errorSearch" class="badge badge-success mb-2">{{customer.lead.details.firstName || "John"}} {{customer.lead.details.lastName || "Doe"}}</span>
+            <span style="width: 100%;" v-if="customer && !errorSearch" class="badge badge-success mb-2">{{customer.firstName}} {{customer.lastName}}</span>
             <span style="width: 100%;" v-if="!customer && !errorSearch" class="badge badge-info mb-2">No customer is selected</span>
             <span style="width: 100%;" v-if="errorSearch" class="badge badge-danger mb-2">No customer with {{searchValue}} email</span>
         </h3>
@@ -29,14 +27,14 @@
             </b-button>
         </div>
     </div>
-    <div class="suggestions row m-0">
-        <div class="col-sm-6 col-xs-12 col-md-4 col-lg-3s p-0" v-for="index in [1, 2, 3, 4, 5, 6]">
+    <div v-if="suggestions.length > 0" class="suggestions row m-0">
+        <div class="col-sm-6 col-xs-12 col-md-4 col-lg-3s p-0" v-for="suggestion in suggestions">
             <div class="card card-block m-1">
-                <h4 class="card-title">FirstName LastName</h4>
-                <h6 class="card-subtitle mb-2 text-muted">Email</h6>
-                <p class="card-text">Companu</p>
+                <h4 class="card-title">{{suggestion.firstName}} {{suggestion.lastName}}</h4>
+                <h6 class="card-subtitle mb-2 text-muted">{{suggestion.email}}</h6>
+                <p class="card-text">Company</p>
                 <p class="card-text">Country</p>
-                <b-button @click="search('FirstName LastName')" size="sm">
+                <b-button @click="search(suggestion.email)" size="sm">
                     Show in graph
                 </b-button>
             </div>
