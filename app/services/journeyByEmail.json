@@ -1,0 +1,27 @@
+{
+    "lead": {
+        "details": {
+            "leadID": "",
+            "email": "",
+            "firstName": "",
+            "lastName": "",
+            "company": "",
+            "country": ""
+        },
+        "journey": [{
+            "date": "",
+            "state": ""
+        }],
+        "predictions": [{
+            "expectedDate": "",
+            "state": "",
+            "probability": 0.0
+        }],
+        "similarLeads": [{
+            "leadID": "",
+            "email": "",
+            "firstName": "",
+            "lastName": ""
+        }]
+    }
+}

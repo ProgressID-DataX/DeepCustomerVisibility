@@ -30,7 +30,7 @@
             "newIsCapExceptions": [],
             "capIsNew": true
         }],
-        "indent": ["error", 4, { "SwitchCase": 1, "VariableDeclarator": 1, "outerIIFEBody": 1 }],
+        "indent": ["error", 4, { "SwitchCase": 1, "VariableDeclarator": 1 }],
         "quotes": ["error", "double", { "allowTemplateLiterals": true }],
         "space-in-parens": ["error", "never"],
         "linebreak-style": "off",
