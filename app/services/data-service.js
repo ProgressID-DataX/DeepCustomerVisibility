@@ -2,9 +2,6 @@ define((require) => {
     const _ = require("lodash");
     const reqwest = require("reqwest");
 
-    const journey = require("text!./journey.json");
-    const journeyByEmail = require("text!./journeyByEmail.json");
-
     const consts = {
         serverAddress: "http://idivanov:8080",
         endpoints: {

@@ -1,5 +1,6 @@
 define((require) => {
     const template = require("text!./home.html");
+    const dataService = require("app/services/data-service");
 
     return {
         template,
@@ -10,12 +11,13 @@ define((require) => {
         },
 
         methods: {
-            search(searchValue) {
-                if(searchValue) {
-                    console.log(searchValue);
-                    // call service here
+            search(email) {
+                if(email) {
+                    dataService.getJourneyByEmail(email)
+                        .then((data) => { console.log(data); });
                 }
             },
+
             clearSearch() {
                 console.log("clear");
                 this.searchValue = string.empty;
