@@ -18,22 +18,10 @@ define((require) => {
             url = _.template(url)({ data });
         }
 
-        // return new Promise((resolve) => {
-        //     switch(endpoint) {
-        //         case consts.endpoints.journey:
-        //             resolve(journey);
-        //             break;
-        //         case consts.endpoints.journeyByEmail:
-        //             resolve(journeyByEmail);
-        //             break;
-        //     }
-        // });
-
         return reqwest({
-            url: `${consts.serverAddress}`,
+            url: `${consts.serverAddress}${endpoint}`,
             type: "json",
-            crossOrigin: true,
-            withCredentials: true
+            crossOrigin: true
         });
     };
 
