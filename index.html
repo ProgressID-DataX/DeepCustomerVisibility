@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Deep Customer Visibility</title>
+
+    <link type="text/css" rel="stylesheet" href="https://unpkg.com/bootstrap@next/dist/css/bootstrap.min.css" />
+    <link type="text/css" rel="stylesheet" href="https://unpkg.com/bootstrap-vue@latest/dist/bootstrap-vue.css" />
+
+    <script src="https://unpkg.com/vue"></script>
+    <script src="https://unpkg.com/vue-router/dist/vue-router.js"></script>
+
+    <script src="https://unpkg.com/babel-polyfill@latest/dist/polyfill.min.js"></script>
+    <script src="https://unpkg.com/tether@latest/dist/js/tether.min.js"></script>
+    <script src="https://unpkg.com/bootstrap-vue@latest/dist/bootstrap-vue.js"></script>
+</head>
+
+<body>
+    <div id="app">
+        <b-nav tabs>
+            <b-nav-item to="/home">Home</b-nav-item>
+            <b-nav-item to="/about">About</b-nav-item>
+        </b-nav>
+
+        <router-view :julyInitial="9"></router-view>
+    </div>
+
+    <script data-main="index" src="lib/require.js"></script>
+</body>
+
+</html>
