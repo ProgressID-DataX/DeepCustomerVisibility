@@ -1,43 +1,39 @@
-<div>
-    <h5 style="text-align: center;" class="pb-2 pt-2">Home Content</h5>
-
-    <div class="graph" ref="graph"></div>
-
-    <div class="col-md-4 pt-2">
-        <h3>
-            <span style="width: 100%;" v-if="customer && !errorSearch" class="badge badge-success mb-2">{{customer.firstName}} {{customer.lastName}}</span>
-            <span style="width: 100%;" v-if="!customer && !errorSearch" class="badge badge-info mb-2">No customer is selected</span>
-            <span style="width: 100%;" v-if="errorSearch" class="badge badge-danger mb-2">No customer with {{searchValue}} email</span>
-        </h3>
-        <div class="pb-2">
-            <b-button @click="clearSearch" variant="danger" :disabled="!customer && !errorSearch">
-                Reset
-            </b-button>
-        </div>
-    </div>
-    <div class="col-md-4">
-        <div class="inner-addon right-addon">
-            <i v-if="searchValue.length === 0" class="fa fa-search"></i>
-            <i v-else class="fa fa-remove" v-on:click.capture="clearSearch"></i>
-            <b-form-input v-model="searchValue" placeholder="Email..."></b-form-input>
-        </div>
-        <div class="pb-2 pt-2">
-            <b-button @click="search(searchValue)" variant="success">
-                Search
-            </b-button>
-        </div>
-    </div>
-    <div v-if="suggestions.length > 0" class="suggestions row m-0">
-        <div class="col-sm-6 col-xs-12 col-md-4 col-lg-3s p-0" v-for="suggestion in suggestions">
-            <div class="card card-block m-1">
-                <h4 class="card-title">{{suggestion.firstName}} {{suggestion.lastName}}</h4>
-                <h6 class="card-subtitle mb-2 text-muted">{{suggestion.email}}</h6>
-                <p class="card-text">Company</p>
-                <p class="card-text">Country</p>
-                <b-button @click="search(suggestion.email)" size="sm">
-                    Show in graph
-                </b-button>
+<div class="container-fluid">
+    <div class="row search">
+        <div class="col-md-6">
+            <div class="inner-addon right-addon">
+                <i class="fa fa-search"></i>
+                <b-form-input v-model="searchValue" :disabled="!!customer" placeholder="Customer email..."></b-form-input>
             </div>
         </div>
+        <div class="col-md-6">
+            <b-button v-if="!customer" @click="search(searchValue)" variant="primary">
+                Search
+            </b-button>
+            <b-button v-else @click="clearSearch">
+                Clear
+            </b-button>
+        </div>
+    </div>
+
+    <div class="row search-error">
+        <div v-show="!customer && errorSearch" class="col-md-12">
+            <span class="badge badge-pill badge-warning">Customer with email {{searchValue}} not found</span>
+        </div>
+    </div>
+
+    <div class="suggestions row">
+        <div v-show="suggestions.length" class="col-sm-auto title">
+            <h6 >Similar customers:</h6>
+        </div>
+        <div class="col-sm-auto link" v-for="suggestion in suggestions">
+            <b-button @click="search(suggestion.email)" size="sm">
+                {{suggestion.firstName}} {{suggestion.lastName}} ({{suggestion.email}})
+            </b-button>
+        </div>
+    </div>
+
+    <div class="row no-gutters">
+        <div class="graph col-sm-12" ref="graph"></div>
     </div>
 </div>

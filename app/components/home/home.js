@@ -63,6 +63,10 @@ define((require) => {
                 }
 
                 graphService.showCustomerData(this._graphInstance, data);
+            },
+
+            searchValue() {
+                this.errorSearch = false;
             }
         },
 

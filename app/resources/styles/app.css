@@ -1,3 +1,7 @@
+.container-fluid {
+    padding-top: 25px;
+}
+
 .inner-addon {
   position: relative;
 }
@@ -15,6 +19,31 @@
 /* add padding  */
 .left-addon input  { padding-left:  30px; }
 .right-addon input { padding-right: 30px; }
+
+/* search  */
+.row.search, .row.search-error {
+    padding-left: 25px;
+}
+
+.row.search-error {
+    padding-top: 10px;
+    min-height: 34px;
+}
+
+/* similar customers  */
+.row.suggestions {
+    padding-left: 45px;
+    min-height: 30px;
+}
+
+.suggestions .title {
+    margin-top: 5px;
+    margin-right: 20px;
+}
+
+.suggestions .link {
+    margin-right: 10px;
+}
 
 /* graph */
 .graph {
