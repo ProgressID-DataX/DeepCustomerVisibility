@@ -21,10 +21,24 @@
 
 <body>
     <div id="app">
-        <b-nav tabs>
-            <b-nav-item to="/home">Home</b-nav-item>
-            <b-nav-item to="/about">About</b-nav-item>
-        </b-nav>
+        <b-navbar toggleable>
+            <b-nav-toggle target="nav_collapse"></b-nav-toggle>
+
+            <b-link class="navbar-brand" to="/home">
+                <span>Deep Customer Visibility</span>
+            </b-link>
+
+            <b-collapse is-nav id="nav_collapse">
+                <b-nav is-nav-bar>
+                    <b-nav-item to="/home">Home</b-nav-item>
+                    <b-nav-item to="/about">About</b-nav-item>
+                </b-nav>
+
+                <b-nav is-nav-bar class="ml-auto">
+
+                </b-nav>
+            </b-collapse>
+        </b-navbar>
 
         <router-view></router-view>
     </div>

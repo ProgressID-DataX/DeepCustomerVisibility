@@ -1,3 +1,11 @@
+#app .navbar {
+    background-color: #4fc08d !important;
+}
+
+.nav-item .nav-link.active {
+    border-bottom: 3px solid #563D7C;
+}
+
 .container-fluid {
     padding-top: 25px;
 }

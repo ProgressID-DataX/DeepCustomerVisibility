@@ -3,21 +3,22 @@
         "content": "data(name)",
         "shape": "rectangle",
         "width": "mapData(name.length, 10, 100, 100, 800)",
-        "color": "black",
-        "background-color": "#6DE",
+        "color": "white",
+        "background-color": "#563D7C",
         "text-valign": "center"
     },
     "node:selected": {
-        "color": "#6DE",
-        "background-color": "black"
+        "color": "black",
+        "background-color": "#4FC08D"
     },
     "node.journey": {
         "color": "black",
-        "background-color": "green"
+        "background-color": "#4FC08D"
     },
     "node.prediction": {
         "shape": "ellipse",
-        "background-color": "#ccc"
+        "color": "black",
+        "background-color": "#FDDD9B"
     },
     "edge": {
         "curve-style": "bezier",
@@ -28,18 +29,18 @@
         "target-arrow-color": "black"
     },
     "edge:selected": {
-        "line-color": "#383",
-        "target-arrow-color": "#383"
+        "line-color": "#563D7C",
+        "target-arrow-color": "#260D4C"
     },
     "edge.journey": {
-        "line-color": "green",
+        "line-color": "#4FC08D",
         "target-arrow-color": "green",
         "opacity": 1,
         "z-index": 1
     },
     "edge.prediction": {
-        "line-color": "green",
-        "target-arrow-color": "green",
+        "line-color": "#FDDD9B",
+        "target-arrow-color": "#CDAD6B",
         "line-style": "dotted",
         "target-arrow-shape": "diamond",
         "opacity": 1,
