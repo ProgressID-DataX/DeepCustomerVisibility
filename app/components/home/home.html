@@ -3,7 +3,12 @@
         <div class="col-md-6">
             <div class="inner-addon right-addon">
                 <i class="fa fa-search"></i>
-                <b-form-input v-model="searchValue" :disabled="!!customer" placeholder="Customer email..."></b-form-input>
+                <b-form-input
+                    v-model="searchValue"
+                    @keyup.enter="search(searchValue)"
+                    :disabled="!!customer"
+                    placeholder="Customer email...">
+                </b-form-input>
             </div>
         </div>
         <div class="col-md-6">
