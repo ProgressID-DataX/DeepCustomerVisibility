@@ -11,9 +11,13 @@
         "color": "#6DE",
         "background-color": "black"
     },
-    "node.highligh": {
-        "line-color": "green",
-        "target-arrow-color": "green"
+    "node.journey": {
+        "color": "black",
+        "background-color": "green"
+    },
+    "node.prediction": {
+        "shape": "ellipse",
+        "background-color": "#ccc"
     },
     "edge": {
         "curve-style": "bezier",
@@ -27,13 +31,19 @@
         "line-color": "#383",
         "target-arrow-color": "#383"
     },
-    "edge.prediction": {
-        "line-style": "dotted",
-        "target-arrow-shape": "diamond"
-    },
-    "edge.highligh": {
+    "edge.journey": {
         "line-color": "green",
-        "target-arrow-color": "green"
+        "target-arrow-color": "green",
+        "opacity": 1,
+        "z-index": 1
+    },
+    "edge.prediction": {
+        "line-color": "green",
+        "target-arrow-color": "green",
+        "line-style": "dotted",
+        "target-arrow-shape": "diamond",
+        "opacity": 1,
+        "z-index": 1
     },
     ".faded": {
         "opacity": 0.25,

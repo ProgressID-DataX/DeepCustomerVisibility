@@ -10,10 +10,19 @@ define((require) => {
             return {
                 searchValue: "",
                 errorSearch: false,
-                customer: null,
-                suggestions: [],
+                lead: null,
                 _graphInstance: null
             };
+        },
+
+        computed: {
+            customer() {
+                return this.lead && this.lead.details;
+            },
+
+            suggestions() {
+                return this.lead ? this.lead.similarLeads : [];
+            }
         },
 
         methods: {
@@ -30,9 +39,7 @@ define((require) => {
 
                     dataService.getJourneyByEmail(email)
                         .then((data) => {
-                            this.customer = data.lead.details;
-                            this.suggestions = data.lead.similarLeads;
-                            console.log(data);
+                            this.lead = data.lead;
                         })
                         .catch(() => {
                             this.errorSearch = true;
@@ -43,8 +50,19 @@ define((require) => {
             clearSearch() {
                 this.errorSearch = false;
                 this.searchValue = "";
-                this.customer = null;
-                this.suggestions = [];
+                this.lead = null;
+            }
+        },
+
+        watch: {
+            lead(data) {
+                if (!data) {
+                    graphService.reset(this._graphInstance);
+
+                    return;
+                }
+
+                graphService.showCustomerData(this._graphInstance, data);
             }
         },
 
