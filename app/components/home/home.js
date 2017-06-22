@@ -3,22 +3,22 @@ define((require) => {
 
     return {
         template,
-        props: ["julyInitial"],
         data() {
             return {
-                julyData: 10
+                searchValue: ""
             };
         },
 
-        computed: {
-            julyComp() {
-                return this.julyData + 5;
-            }
-        },
-
         methods: {
-            julyAdd() {
-                this.julyData += 1;
+            search(searchValue) {
+                if(searchValue) {
+                    console.log(searchValue);
+                    // call service here
+                }
+            },
+            clearSearch() {
+                console.log("clear");
+                this.searchValue = string.empty;
             }
         }
     };

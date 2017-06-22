@@ -1,8 +1,15 @@
 <div>
-    <div>Home Content</div>
-    <div>
-        {{julyData}}
+    <h5 style="text-align: center;" class="pb-2 pt-2">Home Content</h5>
+    <div class="col-md-4">
+        <div class="inner-addon right-addon">
+            <i v-if="searchValue.length === 0" class="fa fa-search"></i>
+            <i v-else class="fa fa-remove" v-on:click.capture="clearSearch"></i>
+            <b-form-input v-model="searchValue" placeholder="Email..."></b-form-input>
+        </div>
+        <div class="pb-2 pt-2">
+            <b-button @click="search(searchValue)">
+                Search
+            </b-button>
+        </div>
     </div>
-    <div>{{julyComp}}</div>
-    <b-button @click="julyAdd">add 1</b-button>
 </div>
