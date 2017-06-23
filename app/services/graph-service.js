@@ -94,24 +94,32 @@ define((require) => {
 
         _addTooltips({ graph }) {
             _.forEach(graph.cy.nodes(), (node) => {
-                let edges;
-                if (node.data().id === "a_S") {
-                    edges = node.connectedEdges();
-                }
-                else {
-                    edges = node.incomers();
-                }
+                let customersSourceString = "";
+                const isStartNode = node.data().id === "a_S";
+                const elemets = isStartNode ? node.connectedEdges() : node.incomers();
+                const edges = _.filter(elemets, (element) => element.isEdge());
 
                 const customers = _(edges)
                     .map((edge) => edge.data().persons)
                     .sum();
 
+                _.forEach(edges, (edge) => {
+                    customersSourceString += "</br>&nbsp;&nbsp;&nbsp;&nbsp;" + graph.data.nodes[edge.data().source].label;
+                });
+
+                const customerStates = _(edges)
+                    .map((edge) => edge.data().source);
+
+                const explainingText = `</br><small>* This is the number of passings</small>`;
+                const basicText = `<b>Customers</b>:* ${customers}`;
+                const extendedText = basicText + `</br><b>Sources</b>:${customersSourceString}`;
+                let tipText = isStartNode ? basicText : extendedText;
+                tipText += explainingText;
+
                 node.qtip({
                     content: {
                         title: node.data().name,
-                        text: `
-                            Customers: ${customers}
-                        `
+                        text: tipText
                     },
                     position: {
                         my: "center left",
@@ -132,7 +140,7 @@ define((require) => {
                     content: {
                         title: `${sourceNode} - ${targetNode}`,
                         text: `
-                            Customers: ${customers}
+                            <b>Customers</b>: ${customers}
                         `
                     },
                     position: {
