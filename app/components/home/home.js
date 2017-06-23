@@ -10,7 +10,7 @@ define((require) => {
             return {
                 searchValue: "",
                 errorSearch: false,
-                lead: null,
+                customerData: null,
                 isFullScreen: false,
                 _graphInstance: null,
                 _graphToolbar: null
@@ -19,11 +19,11 @@ define((require) => {
 
         computed: {
             customer() {
-                return this.lead && this.lead.details;
+                return this.customerData && this.customerData.details;
             },
 
             suggestions() {
-                return this.lead ? this.lead.similarLeads : [];
+                return this.customerData ? this.customerData.similarCustomers : [];
             },
 
             customerFullName() {
@@ -38,7 +38,13 @@ define((require) => {
                 if (email) {
                     dataService.getJourneyByEmail(email)
                         .then((data) => {
-                            this.lead = data.customer;
+                            if (data.error) {
+                                this.errorSearch = true;
+
+                                return;
+                            }
+
+                            this.customerData = data.customer;
                             this.searchValue = this.customerFullName;
                         })
                         .catch(() => {
@@ -50,7 +56,7 @@ define((require) => {
             clearSearch() {
                 this.errorSearch = false;
                 this.searchValue = "";
-                this.lead = null;
+                this.customerData = null;
             },
 
             toolbar(action) {
@@ -69,7 +75,7 @@ define((require) => {
         },
 
         watch: {
-            lead(data) {
+            customerData(data) {
                 if (!data) {
                     graphService.reset(this._graphInstance);
 
