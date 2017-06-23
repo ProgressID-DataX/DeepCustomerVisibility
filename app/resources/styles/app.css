@@ -87,3 +87,16 @@ html, body, #app, .container-fluid {
 .qtip, .qtip-bootstrap .qtip-titlebar {
     font-size: 12px;
 }
+
+.footer {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    height: 15px;
+}
+
+.container .text-muted {
+    margin: 0;
+    font-size: 10px;
+    text-align: center;
+}

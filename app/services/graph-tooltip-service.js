@@ -80,7 +80,7 @@ define((require) => {
         },
 
         _getNodeTipText({ isStartNode, customers, customersSourceString }) {
-            const explainingText = `</br></br><small><b>*</b> This is the number of passings</small>`;
+            const explainingText = `</br></br><small><b>*</b> This is the number of passings throught the nodes.</small>`;
             const basicText = `<b>Customers</b>:* ${customers}`;
             const extendedText = `${basicText}</br><b>Sources</b>:${customersSourceString}`;
             let tipText = isStartNode ? basicText : extendedText;
