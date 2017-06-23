@@ -34,6 +34,7 @@
         "quotes": ["error", "double", { "allowTemplateLiterals": true }],
         "space-in-parens": ["error", "never"],
         "linebreak-style": "off",
+        "no-template-curly-in-string":"off",
         "no-empty": ["error", { "allowEmptyCatch": true }],
         "comma-dangle": "off",
         "arrow-body-style": "off",

@@ -7,10 +7,6 @@
         "background-color": "#563D7C",
         "text-valign": "center"
     },
-    "node:selected": {
-        "color": "black",
-        "background-color": "#4FC08D"
-    },
     "node.journey": {
         "color": "black",
         "background-color": "#4FC08D"
@@ -19,6 +15,10 @@
         "shape": "ellipse",
         "color": "black",
         "background-color": "#FDDD9B"
+    },
+    "node:selected": {
+        "color": "black",
+        "background-color": "#ccc"
     },
     "edge": {
         "curve-style": "bezier",

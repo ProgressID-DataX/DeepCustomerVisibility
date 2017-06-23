@@ -1,5 +1,4 @@
 define((require) => {
-    const _ = require("lodash");
     const template = require("text!./home.html");
     const dataService = require("app/services/data-service");
     const graphService = require("app/services/graph-service");
@@ -22,13 +21,16 @@ define((require) => {
 
             suggestions() {
                 return this.lead ? this.lead.similarLeads : [];
+            },
+
+            customerFullName() {
+                return `${this.customer.firstName} ${this.customer.lastName} (${this.customer.email})`;
             }
         },
 
         methods: {
             search(email) {
                 this.errorSearch = false;
-                this.searchValue = email;
 
                 if (email) {
                     // ToDo: remove this if - it is for test purposes only
@@ -40,6 +42,7 @@ define((require) => {
                     dataService.getJourneyByEmail(email)
                         .then((data) => {
                             this.lead = data.lead;
+                            this.searchValue = this.customerFullName;
                         })
                         .catch(() => {
                             this.errorSearch = true;
@@ -74,7 +77,7 @@ define((require) => {
             dataService.getJourney()
                 .then((data) => {
                     this._graphInstance = graphService
-                        .createGraph(this.$refs.graph, data);
+                        .createGraph(this.$refs.graph, this.$refs.toolbar, data);
                 });
         }
     };
