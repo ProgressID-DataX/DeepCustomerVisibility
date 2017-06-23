@@ -64,7 +64,20 @@ html, body, #app, .container-fluid {
 
 /* graph */
 .toolbar-container {
-    padding-left: 17px;
+    position: absolute;
+    z-index: 9999;
+    right: 25px;
+}
+
+.toolbar i {
+    padding-right: 15px;
+    color: gray;
+    user-select: none;
+}
+
+.toolbar i:hover {
+    cursor: pointer;
+    color: black;
 }
 
 .graph-container {

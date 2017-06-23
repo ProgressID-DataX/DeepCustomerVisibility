@@ -2,6 +2,7 @@ define((require) => {
     const template = require("text!./home.html");
     const dataService = require("app/services/data-service");
     const graphService = require("app/services/graph-service");
+    const graphUtilsService = require("app/services/graph-utils-service");
 
     return {
         template,
@@ -10,7 +11,9 @@ define((require) => {
                 searchValue: "",
                 errorSearch: false,
                 lead: null,
-                _graphInstance: null
+                isFullScreen: false,
+                _graphInstance: null,
+                _graphToolbar: null
             };
         },
 
@@ -54,6 +57,20 @@ define((require) => {
                 this.errorSearch = false;
                 this.searchValue = "";
                 this.lead = null;
+            },
+
+            toolbar(action) {
+                graphUtilsService[action](this._graphInstance);
+
+                setTimeout(() => {
+                    this.isFullScreen = this._checkFullScreen();
+                }, 100);
+            },
+
+            _checkFullScreen() {
+                return (document.fullScreenElement && document.fullScreenElement !== null)
+                    || document.mozFullScreen
+                    || document.webkitIsFullScreen;
             }
         },
 
