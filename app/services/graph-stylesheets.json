@@ -26,7 +26,8 @@
         "width": "mapData(customers, 0, 10000, 1, 10)",
         "target-arrow-shape": "triangle",
         "line-color": "#ccc",
-        "target-arrow-color": "black"
+        "target-arrow-color": "black",
+        "font-weight": "bold"
     },
     "edge.journey": {
         "line-color": "#4FC08D",
@@ -40,7 +41,7 @@
         "line-style": "dotted",
         "target-arrow-shape": "diamond",
         "opacity": 1,
-        "z-index": 1
+        "z-index": 2
     },
     "edge:selected": {
         "line-color": "#FDDD9B",

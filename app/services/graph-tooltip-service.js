@@ -7,22 +7,23 @@ define((require) => {
     cyqtip(cytoscape, jquery);
 
     return {
-        addTooltips({ graph }) {
+        addTooltips({ graph, customerData }) {
             this._setNodeTips({ graph });
-            this._setEdgeTips({ graph });
+            this._setEdgeTips({ graph, customerData });
         },
 
-        _setEdgeTips({ graph }) {
+        _setEdgeTips({ graph, customerData }) {
             _.forEach(graph.cy.edges(), (edge) => {
-                const customersText = `<b>Customers</b>:`;
-                const customers = edge.data().customers;
                 const sourceNode = graph.data.nodes[edge.data().source].name;
                 const targetNode = graph.data.nodes[edge.data().target].name;
+                const customersText = `<b>Customers</b>:`;
+                const customers = edge.data().customers;
+                const predictionText = this._getPredictionText({ graph, customerData, edge });
 
                 edge.qtip({
                     content: {
                         title: `${sourceNode} &#x21E8; ${targetNode}`,
-                        text: `${customersText} ${customers}`
+                        text: `${customersText} ${customers} ${predictionText}`
                     },
                     position: {
                         my: "center left",
@@ -30,7 +31,8 @@ define((require) => {
                     },
                     style: {
                         classes: "qtip-bootstrap"
-                    }
+                    },
+                    overwrite: true
                 });
             });
         },
@@ -55,7 +57,8 @@ define((require) => {
                     },
                     style: {
                         classes: "qtip-bootstrap"
-                    }
+                    },
+                    overwrite: true
                 });
             });
         },
@@ -87,6 +90,25 @@ define((require) => {
             tipText += explainingText;
 
             return tipText;
+        },
+
+        _getPredictionText({ graph, customerData, edge }) {
+            let predictionText = "";
+
+            const prediction = graph.data.links[edge.data().id].prediction;
+
+            if (prediction) {
+                const probability = `${prediction.probability.toFixed(2) * 100}%`;
+                const nodeName = graph.data.nodes[prediction.state].name;
+                const customerLastDate = new Date(_.last(customerData.journey).date);
+                const predictionDate = new Date();
+
+                predictionDate.setDate(customerLastDate.getDate() + prediction.expectedDays);
+
+                predictionText = `</br><b>Prediction:</b> ${probability} chance for ${nodeName} on ${predictionDate.toLocaleDateString()}`;
+            }
+
+            return predictionText;
         }
     };
 });
