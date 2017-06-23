@@ -11,7 +11,7 @@ define((require) => {
     const getEdgeId = (sourceId, targetId) => `${sourceId}_${targetId}`;
 
     return {
-        createGraph(el, data) {
+        createGraph(graphElement, toolbarElement, data) {
             _.forEach(data.nodes, (node) => {
                 data.nodes[node.id] = node;
             });
@@ -25,11 +25,14 @@ define((require) => {
             const graph = {
                 data,
                 cy: cytoscape({
-                    container: el,
+                    container: graphElement,
 
+                    minZoom: 0.6,
+                    maxZoom: 2,
+                    wheelSensitivity: 0.5,
                     boxSelectionEnabled: false,
-                    userZoomingEnabled: false,
-                    userPanningEnabled: false,
+                    // userZoomingEnabled: false,
+                    // userPanningEnabled: false,
 
                     style: stylesheet,
 

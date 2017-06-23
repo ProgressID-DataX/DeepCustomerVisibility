@@ -1,3 +1,11 @@
+html, body, #app, .container-fluid {
+    width: 100%;
+    height: 100%;
+    margin: 0 auto;
+    padding: 0;
+    overflow: hidden;
+}
+
 #app .navbar {
     background-color: #4fc08d !important;
 }
@@ -8,6 +16,7 @@
 
 .container-fluid {
     padding-top: 25px;
+    height: calc(100% - 59px);
 }
 
 .inner-addon {
@@ -54,9 +63,18 @@
 }
 
 /* graph */
+.toolbar-container {
+    padding-left: 17px;
+}
+
+.graph-container {
+    width: 100%;
+    height: calc(100% - 103px);
+}
+
 .graph {
     width: 100%;
-    height: 600px;
+    height: 100%;
     overflow: visible;
     margin: 0 auto;
 }
