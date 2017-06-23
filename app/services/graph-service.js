@@ -2,9 +2,7 @@ define((require) => {
     const _ = require("lodash");
     const jquery = require("jquery");
     const cytoscape = require("cytoscape");
-    const cyqtip = require("cytoscape-qtip");
-
-    cyqtip(cytoscape, jquery);
+    const graphTooltipService = require("./graph-tooltip-service.js");
 
     const stylesheets = JSON.parse(require("text!./graph-stylesheets.json"));
 
@@ -64,7 +62,7 @@ define((require) => {
                 })
             };
 
-            this._addTooltips({ graph });
+            graphTooltipService.addTooltips({ graph });
 
             return graph;
         },
@@ -93,65 +91,6 @@ define((require) => {
         reset(graph) {
             graph.cy.$("*").removeClass("journey");
             graph.cy.$("*").removeClass("prediction");
-        },
-
-        _addTooltips({ graph }) {
-            _.forEach(graph.cy.nodes(), (node) => {
-                let customersSourceString = "";
-                const isStartNode = node.data().id === "a_S";
-                const elemets = isStartNode ? node.connectedEdges() : node.incomers();
-                const edges = _.filter(elemets, (element) => element.isEdge());
-
-                const customers = _(edges)
-                    .map((edge) => edge.data().persons)
-                    .sum();
-
-                _.forEach(edges, (edge) => {
-                    customersSourceString += "</br>&nbsp;&nbsp;&nbsp;&nbsp;" + graph.data.nodes[edge.data().source].label;
-                });
-
-                const explainingText = `</br></br><small><b>*</b> This is the number of passings</small>`;
-                const basicText = `<b>Customers</b>:* ${customers}`;
-                const extendedText = `${basicText}</br><b>Sources</b>:${customersSourceString}`;
-                let tipText = isStartNode ? basicText : extendedText;
-                tipText += explainingText;
-
-                node.qtip({
-                    content: {
-                        title: node.data().name,
-                        text: tipText
-                    },
-                    position: {
-                        my: "center left",
-                        at: "center right"
-                    },
-                    style: {
-                        classes: "qtip-bootstrap"
-                    }
-                });
-            });
-
-            _.forEach(graph.cy.edges(), (edge) => {
-                const customers = edge.data().persons;
-                const sourceNode = graph.data.nodes[edge.data().source].label;
-                const targetNode = graph.data.nodes[edge.data().target].label;
-
-                edge.qtip({
-                    content: {
-                        title: `${sourceNode} - ${targetNode}`,
-                        text: `
-                            <b>Customers</b>: ${customers}
-                        `
-                    },
-                    position: {
-                        my: "center left",
-                        at: "center right"
-                    },
-                    style: {
-                        classes: "qtip-bootstrap"
-                    }
-                });
-            });
         },
 
         _addClasses({ graph, elementIds, classes }) {
