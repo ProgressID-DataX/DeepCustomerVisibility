@@ -94,8 +94,15 @@ define((require) => {
 
         _addTooltips({ graph }) {
             _.forEach(graph.cy.nodes(), (node) => {
-                const outgoingEdges = node.connectedEdges();
-                const customers = _(outgoingEdges)
+                let edges;
+                if (node.data().id === "a_S") {
+                    edges = node.connectedEdges();
+                }
+                else {
+                    edges = node.incomers();
+                }
+
+                const customers = _(edges)
                     .map((edge) => edge.data().persons)
                     .sum();
 
