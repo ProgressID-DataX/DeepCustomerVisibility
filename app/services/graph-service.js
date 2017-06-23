@@ -107,12 +107,9 @@ define((require) => {
                     customersSourceString += "</br>&nbsp;&nbsp;&nbsp;&nbsp;" + graph.data.nodes[edge.data().source].label;
                 });
 
-                const customerStates = _(edges)
-                    .map((edge) => edge.data().source);
-
-                const explainingText = `</br><small>* This is the number of passings</small>`;
+                const explainingText = `</br></br><small><b>*</b> This is the number of passings</small>`;
                 const basicText = `<b>Customers</b>:* ${customers}`;
-                const extendedText = basicText + `</br><b>Sources</b>:${customersSourceString}`;
+                const extendedText = `${basicText}</br><b>Sources</b>:${customersSourceString}`;
                 let tipText = isStartNode ? basicText : extendedText;
                 tipText += explainingText;
 

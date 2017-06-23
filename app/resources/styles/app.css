@@ -60,3 +60,12 @@
     overflow: visible;
     margin: 0 auto;
 }
+
+.qtip {
+    max-width: 300px;
+    min-width:250px;
+}
+
+.qtip, .qtip-bootstrap .qtip-titlebar {
+    font-size: 12px;
+}
