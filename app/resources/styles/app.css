@@ -31,12 +31,8 @@ html, body, #app, .container-fluid {
   pointer-events: none;
 }
 
-/* align glyph */
-.left-addon .fa  { left:  0px;}
+/* align input icon */
 .right-addon .fa { right: 0px;}
-
-/* add padding  */
-.left-addon input  { padding-left:  30px; }
 .right-addon input { padding-right: 30px; }
 
 /* search  */
@@ -95,6 +91,7 @@ html, body, #app, .container-fluid {
     margin: 0 auto;
 }
 
+/* graph tooltip */
 .qtip {
     max-width: 350px;
     min-width: 275px;
@@ -104,6 +101,7 @@ html, body, #app, .container-fluid {
     font-size: 12px;
 }
 
+/* footer */
 .footer {
     position: absolute;
     bottom: 0;
