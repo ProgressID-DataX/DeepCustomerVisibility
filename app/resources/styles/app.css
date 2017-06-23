@@ -5,7 +5,6 @@ html, body, #app, .container-fluid {
     min-height: 600px;
     margin: 0 auto;
     padding: 0;
-    overflow: hidden;
 }
 
 #app .navbar {
@@ -19,6 +18,7 @@ html, body, #app, .container-fluid {
 .container-fluid {
     padding-top: 25px;
     height: calc(100% - 59px);
+    overflow: hidden;
 }
 
 .inner-addon {
