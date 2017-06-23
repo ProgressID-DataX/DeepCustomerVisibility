@@ -1,6 +1,8 @@
 html, body, #app, .container-fluid {
     width: 100%;
     height: 100%;
+    min-width: 1080px;
+    min-height: 600px;
     margin: 0 auto;
     padding: 0;
     overflow: hidden;
@@ -66,6 +68,7 @@ html, body, #app, .container-fluid {
 .toolbar-container {
     position: absolute;
     z-index: 9999;
+    top: 25px;
     right: 25px;
 }
 
@@ -93,8 +96,8 @@ html, body, #app, .container-fluid {
 }
 
 .qtip {
-    max-width: 300px;
-    min-width:250px;
+    max-width: 350px;
+    min-width: 275px;
 }
 
 .qtip, .qtip-bootstrap .qtip-titlebar {

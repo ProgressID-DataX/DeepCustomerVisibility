@@ -15,13 +15,13 @@ define((require) => {
         _setEdgeTips({ graph }) {
             _.forEach(graph.cy.edges(), (edge) => {
                 const customersText = `<b>Customers</b>:`;
-                const customers = edge.data().persons;
-                const sourceNode = graph.data.nodes[edge.data().source].label;
-                const targetNode = graph.data.nodes[edge.data().target].label;
+                const customers = edge.data().customers;
+                const sourceNode = graph.data.nodes[edge.data().source].name;
+                const targetNode = graph.data.nodes[edge.data().target].name;
 
                 edge.qtip({
                     content: {
-                        title: `${sourceNode} - ${targetNode}`,
+                        title: `${sourceNode} &#x21E8; ${targetNode}`,
                         text: `${customersText} ${customers}`
                     },
                     position: {
@@ -62,7 +62,7 @@ define((require) => {
 
         _getPassingCustomersNumber({ edges }) {
             const customers = _(edges)
-                .map((edge) => edge.data().persons)
+                .map((edge) => edge.data().customers)
                 .sum();
 
             return customers;
@@ -73,7 +73,7 @@ define((require) => {
             const separator = "</br>&nbsp;&nbsp;&nbsp;&nbsp;";
 
             _.forEach(edges, (edge) => {
-                customersSourceString += separator + graph.data.nodes[edge.data().source].label;
+                customersSourceString += separator + graph.data.nodes[edge.data().source].name;
             });
 
             return customersSourceString;

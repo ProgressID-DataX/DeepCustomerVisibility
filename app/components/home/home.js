@@ -27,7 +27,7 @@ define((require) => {
             },
 
             customerFullName() {
-                return `${this.customer.firstName} ${this.customer.lastName} (${this.customer.email})`;
+                return this.customer && `${this.customer.firstName} ${this.customer.lastName} (${this.customer.email})`;
             }
         },
 
@@ -36,15 +36,9 @@ define((require) => {
                 this.errorSearch = false;
 
                 if (email) {
-                    // ToDo: remove this if - it is for test purposes only
-                    if (email === "x") {
-                        this.errorSearch = true;
-                        return;
-                    }
-
                     dataService.getJourneyByEmail(email)
                         .then((data) => {
-                            this.lead = data.lead;
+                            this.lead = data.customer;
                             this.searchValue = this.customerFullName;
                         })
                         .catch(() => {
@@ -64,7 +58,7 @@ define((require) => {
 
                 setTimeout(() => {
                     this.isFullScreen = this._checkFullScreen();
-                }, 100);
+                }, 400);
             },
 
             _checkFullScreen() {
@@ -90,11 +84,19 @@ define((require) => {
             }
         },
 
+        created() {
+            window.onresize = () => {
+                if (this._graphInstance) {
+                    graphUtilsService.delayedFit(this._graphInstance);
+                }
+            };
+        },
+
         mounted() {
             dataService.getJourney()
                 .then((data) => {
                     this._graphInstance = graphService
-                        .createGraph(this.$refs.graph, this.$refs.toolbar, data);
+                        .createGraph(this.$refs.graph, this.$refs.toolbar, data.graph);
                 });
         }
     };

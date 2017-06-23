@@ -1,6 +1,5 @@
 define((require) => {
     const _ = require("lodash");
-    const jquery = require("jquery");
     const cytoscape = require("cytoscape");
     const graphTooltipService = require("./graph-tooltip-service.js");
 
@@ -38,7 +37,7 @@ define((require) => {
                         nodes: _.map(data.nodes, (node) => ({
                             data: {
                                 id: node.id,
-                                name: node.label
+                                name: node.name
                             }
                         })),
                         edges: _.map(data.links, (link) => {
@@ -50,7 +49,7 @@ define((require) => {
                                     id: getEdgeId(sourceNodeId, targetNodeId),
                                     source: sourceNodeId,
                                     target: targetNodeId,
-                                    persons: link.persons || 0
+                                    customers: link.customers || 0
                                 }
                             };
                         })

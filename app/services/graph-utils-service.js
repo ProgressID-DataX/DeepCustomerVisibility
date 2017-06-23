@@ -9,23 +9,29 @@ define((require) => {
         }
 
         panup(graph) {
-            graph.cy.zoom(graph.cy.zoom() - 0.1);
+            graph.cy.panBy({ x: 0, y: 80 });
         }
 
         pandown(graph) {
-            graph.cy.zoom(graph.cy.zoom() - 0.1);
+            graph.cy.panBy({ x: 0, y: -80 });
         }
 
         panleft(graph) {
-            graph.cy.zoom(graph.cy.zoom() - 0.1);
+            graph.cy.panBy({ x: 80, y: 0 });
         }
 
         panright(graph) {
-            graph.cy.zoom(graph.cy.zoom() - 0.1);
+            graph.cy.panBy({ x: -80, y: 0 });
         }
 
         fit(graph) {
             graph.cy.fit(30);
+        }
+
+        delayedFit(graph) {
+            setTimeout(() => {
+                this.fit(graph);
+            }, 500);
         }
 
         fullscreen(graph) {
@@ -36,8 +42,6 @@ define((require) => {
                 || container.webkitRequestFullscreen
                 || container.mozRequestFullScreen
                 || container.msRequestFullscreen).call(container);
-
-                this._fullScreenFit(graph);
             }
         }
 
@@ -46,14 +50,6 @@ define((require) => {
             || document.webkitExitFullscreen
             || document.mozExitFullScreen
             || document.msExitFullScreen).call(document);
-
-            this._fullScreenFit(graph);
-        }
-
-        _fullScreenFit(graph) {
-            setTimeout(() => {
-                this.fit(graph);
-            }, 500);
         }
     }
 
