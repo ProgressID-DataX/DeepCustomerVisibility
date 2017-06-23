@@ -39,7 +39,19 @@
     </div>
 
     <div class="row no-gutters toolbar-container">
-        <div class="toolbar col-sm-12" ref="toolbar"></div>
+        <div class="toolbar col-sm-12" ref="toolbar">
+            <i class="fa fa-2x fa-arrow-up" title="Pan up"  @click="toolbar('panup')"></i>
+            <i class="fa fa-2x fa-arrow-down" title="Pan down"  @click="toolbar('pandown')"></i>
+            <i class="fa fa-2x fa-arrow-left" title="Pan left"  @click="toolbar('panleft')"></i>
+            <i class="fa fa-2x fa-arrow-right" title="Pan right"  @click="toolbar('panright')"></i>
+            <i class="fa fa-2x fa-search-plus" title="Zoom in" @click="toolbar('zoomin')"></i>
+            <i class="fa fa-2x fa-search-minus" title="Zoom out"  @click="toolbar('zoomout')"></i>
+            <i class="fa fa-2x fa-expand" title="Fit to view"  @click="toolbar('fit')"></i>
+            <transition name="fade" mode="out-in">
+                <i class="fa fa-2x fa-arrows-alt" title="Fullscreen" v-if="!isFullScreen" @click="toolbar('fullscreen')"></i>
+                <i class="fa fa-2x fa-remove" title="Exit fullscreen" v-else @click="toolbar('exitFullscreen')"></i>
+            </transition>
+        </div>
     </div>
 
     <div class="row no-gutters graph-container">

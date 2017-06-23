@@ -7,14 +7,14 @@
         "background-color": "#563D7C",
         "text-valign": "center"
     },
-    "node.journey": {
-        "color": "black",
-        "background-color": "#4FC08D"
-    },
     "node.prediction": {
         "shape": "ellipse",
         "color": "black",
         "background-color": "#FDDD9B"
+    },
+    "node.journey": {
+        "color": "black",
+        "background-color": "#4FC08D"
     },
     "node:selected": {
         "color": "black",
