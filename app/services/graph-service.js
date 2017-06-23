@@ -7,6 +7,8 @@ define((require) => {
 
     const getEdgeId = (sourceId, targetId) => `${sourceId}_${targetId}`;
 
+    let graphJson = null;
+
     return {
         createGraph(graphElement, toolbarElement, data) {
             _.forEach(data.nodes, (node) => {
@@ -43,8 +45,7 @@ define((require) => {
                         edges: _.map(data.links, (link) => {
                             const sourceNodeId = data.nodes[link.source].id;
                             const targetNodeId = data.nodes[link.target].id;
-
-                            return {
+                            const edge = {
                                 data: {
                                     id: getEdgeId(sourceNodeId, targetNodeId),
                                     source: sourceNodeId,
@@ -52,6 +53,10 @@ define((require) => {
                                     customers: link.customers || 0
                                 }
                             };
+
+                            data.links[edge.data.id] = edge.data;
+
+                            return edge;
                         })
                     },
 
@@ -63,7 +68,43 @@ define((require) => {
 
             graphTooltipService.addTooltips({ graph });
 
+            graphJson = graph.cy.json();
+
             return graph;
+        },
+
+        reinitGraph(graph, data) {
+            if (!data) {
+                graph.cy.json(graphJson);
+                graphTooltipService.addTooltips({ graph });
+
+                return;
+            }
+
+            const { journey, predictions } = data;
+
+            const original = this._getElementIdsForCustomerPath(journey);
+
+            const leadLastState = _.last(journey).state;
+
+            const predicted = this._getElementIdsForCustomerPredictedPath({
+                states: predictions,
+                initialNodeId: leadLastState
+            });
+
+            const allNodes = _.uniq(original.nodes.concat(predicted.nodes));
+            const allEdges = _.uniq(original.edges.concat(predicted.edges));
+            const allNodesData = _.map(allNodes, (node) => ({
+                group: "nodes",
+                data: graph.data.nodes[node]
+            }));
+            const allEdgesData = _.map(allEdges, (edge) => ({
+                group: "edges",
+                data: graph.data.links[edge]
+            }));
+
+            graph.cy.add(allNodesData.concat(allEdgesData));
+            graphTooltipService.addTooltips({ graph });
         },
 
         showCustomerData(graph, { journey, predictions }) {
@@ -86,9 +127,7 @@ define((require) => {
         },
 
         reset(graph) {
-            graph.cy.$("*").style({ display: "element" });
-            graph.cy.$("*").removeClass("journey");
-            graph.cy.$("*").removeClass("prediction");
+            graph.cy.$("*").remove();
         },
 
         _addClasses({ graph, elementIds, classes }) {

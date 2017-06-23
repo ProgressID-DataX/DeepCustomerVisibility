@@ -17,8 +17,10 @@ define((require) => {
 
         return reqwest({
             url: `${consts.serverAddress}${endpoint}`,
-            type: "json",
+            type: "string",
             crossOrigin: true
+        }).then((xhr) => {
+            return JSON.parse(xhr.response.replace(/NaN/g, "\"\""));
         });
     };
 

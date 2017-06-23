@@ -1,4 +1,5 @@
 define((require) => {
+    const _ = require("lodash");
     const template = require("text!./home.html");
     const dataService = require("app/services/data-service");
     const graphService = require("app/services/graph-service");
@@ -24,7 +25,14 @@ define((require) => {
             },
 
             suggestions() {
-                return this.customerData ? this.customerData.similarCustomers : [];
+                if (!this.customerData) {
+                    return [];
+                }
+
+                return _(this.customerData.similarCustomers)
+                    .filter((customer) => customer.email !== this.customer.email)
+                    .take(6)
+                    .value();
             },
 
             customerFullName() {
@@ -90,19 +98,13 @@ define((require) => {
 
         watch: {
             customerData(data) {
-                graphService.reset(this._graphInstance);
-
-                if (!data) {
-                    return;
-                }
-
                 if (this.isGraphFiltered) {
                     this.toolbar("filteron");
 
                     return;
                 }
 
-                graphService.showCustomerData(this._graphInstance, data);
+                this.toolbar("filteroff");
             },
 
             searchValue() {

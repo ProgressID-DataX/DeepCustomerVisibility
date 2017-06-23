@@ -48,7 +48,7 @@ html, body, #app, .container-fluid {
 /* similar customers  */
 .row.suggestions {
     padding-left: 45px;
-    min-height: 30px;
+    min-height: 59px;
 }
 
 .suggestions .title {

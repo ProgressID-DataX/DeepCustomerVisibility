@@ -37,7 +37,7 @@ define((require) => {
 
         _setNodeTips({ graph }) {
             _.forEach(graph.cy.nodes(), (node) => {
-                const isStartNode = node.data().id === "a_S";
+                const isStartNode = node.data().id === "A";
                 const elements = isStartNode ? node.connectedEdges() : node.incomers();
                 const edges = _.filter(elements, (element) => element.isEdge());
                 const customersSourceString = this._getEdgesSourcesAsString({ graph, edges });

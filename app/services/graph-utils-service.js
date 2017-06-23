@@ -27,17 +27,25 @@ define((require) => {
         }
 
         filteron(graph, customerData) {
-            graph.cy.$("*").style({ display: "none" });
+            graphService.reset(graph);
+            graphService.reinitGraph(graph, customerData);
             graphService.showCustomerData(graph, customerData);
+
+            this.fit(graph);
         }
 
         filteroff(graph, customerData) {
-            graph.cy.$("*").style({ display: "element" });
+            graphService.reset(graph);
+            graphService.reinitGraph(graph);
             graphService.showCustomerData(graph, customerData);
+
+            this.fit(graph);
         }
 
         fit(graph) {
-            graph.cy.fit(30);
+            const layout = graph.cy.layout({ name: "grid" });
+
+            layout.run();
         }
 
         delayedFit(graph) {
