@@ -111,7 +111,8 @@ define((require) => {
             this._addClasses({
                 graph,
                 elementIds: this._getElementIdsForCustomerPath(journey),
-                classes: "journey"
+                classes: "journey",
+                addNodeNumbers: true
             });
 
             const leadLastState = _.last(journey).state;
@@ -137,7 +138,7 @@ define((require) => {
             graph.cy.$("*").remove();
         },
 
-        _addClasses({ graph, elementIds, classes, label }) {
+        _addClasses({ graph, elementIds, classes, label, addNodeNumbers }) {
             const ids = `#${elementIds.nodes.concat(elementIds.edges).join(", #")}`;
 
             const elements = graph.cy.$(ids);
@@ -149,6 +150,16 @@ define((require) => {
                     const element = graph.cy.$(`#${edgeId}`);
                     const labelValue = graph.data.links[edgeId].prediction[label];
                     const labelText = `${labelValue.toFixed(2) * 100}%`;
+
+                    element.style({ label: labelText });
+                });
+            }
+
+            if (addNodeNumbers) {
+                _.forEach(elementIds.nodes, (nodeId, index) => {
+                    const element = graph.cy.$(`#${nodeId}`);
+                    const labelValue = graph.data.nodes[nodeId].name;
+                    const labelText = `${labelValue} (${index + 1})`;
 
                     element.style({ label: labelText });
                 });
@@ -174,7 +185,7 @@ define((require) => {
                 }
             });
 
-            return { nodes, edges };
+            return { nodes: this._getUniq(nodes), edges: this._getUniq(edges) };
         },
 
         _getElementIdsForCustomerPredictedPath({ graph, states, initialNodeId }) {
@@ -192,7 +203,25 @@ define((require) => {
                 edges.push(edgeId);
             });
 
-            return { nodes, edges };
+            return { nodes: this._getUniq(nodes), edges: this._getUniq(edges) };
+        },
+
+        _getUniq(elements) {
+            const uniqObj = {};
+            const uniqList = [];
+
+            _(elements)
+                .reverse()
+                .forEach((element) => {
+                    if (uniqObj[element]) {
+                        return;
+                    }
+
+                    uniqList.push(element);
+                    uniqObj[element] = true;
+                });
+
+            return _.reverse(uniqList);
         }
     };
 });
