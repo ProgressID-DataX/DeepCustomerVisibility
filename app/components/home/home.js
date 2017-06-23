@@ -12,6 +12,7 @@ define((require) => {
                 errorSearch: false,
                 customerData: null,
                 isFullScreen: false,
+                isGraphFiltered: false,
                 _graphInstance: null,
                 _graphToolbar: null
             };
@@ -60,11 +61,24 @@ define((require) => {
             },
 
             toolbar(action) {
-                graphUtilsService[action](this._graphInstance);
+                graphUtilsService[action](this._graphInstance, this.customerData);
 
-                setTimeout(() => {
-                    this.isFullScreen = this._checkFullScreen();
-                }, 400);
+                switch (action) {
+                    case "filteron":
+                        this.isGraphFiltered = true;
+                        break;
+                    case "filteroff":
+                        this.isGraphFiltered = false;
+                        break;
+                    case "fullscreen":
+                    case "exitfullscreen":
+                        setTimeout(() => {
+                            this.isFullScreen = this._checkFullScreen();
+                        }, 400);
+                        break;
+                    default:
+                        break;
+                }
             },
 
             _checkFullScreen() {
@@ -76,8 +90,14 @@ define((require) => {
 
         watch: {
             customerData(data) {
+                graphService.reset(this._graphInstance);
+
                 if (!data) {
-                    graphService.reset(this._graphInstance);
+                    return;
+                }
+
+                if (this.isGraphFiltered) {
+                    this.toolbar("filteron");
 
                     return;
                 }

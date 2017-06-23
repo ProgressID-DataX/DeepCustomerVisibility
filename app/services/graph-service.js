@@ -67,8 +67,6 @@ define((require) => {
         },
 
         showCustomerData(graph, { journey, predictions }) {
-            this.reset(graph);
-
             this._addClasses({
                 graph,
                 elementIds: this._getElementIdsForCustomerPath(journey),
@@ -88,6 +86,7 @@ define((require) => {
         },
 
         reset(graph) {
+            graph.cy.$("*").style({ display: "element" });
             graph.cy.$("*").removeClass("journey");
             graph.cy.$("*").removeClass("prediction");
         },
@@ -98,6 +97,7 @@ define((require) => {
             const elements = graph.cy.$(ids);
 
             elements.addClass(classes);
+            elements.style({ display: "element" });
         },
 
         _getElementIdsForCustomerPath(states) {

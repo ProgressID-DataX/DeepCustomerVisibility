@@ -1,4 +1,6 @@
 define((require) => {
+    const graphService = require("./graph-service");
+
     class GraphUtilsService {
         zoomin(graph) {
             graph.cy.zoom(graph.cy.zoom() + 0.1);
@@ -24,6 +26,16 @@ define((require) => {
             graph.cy.panBy({ x: -80, y: 0 });
         }
 
+        filteron(graph, customerData) {
+            graph.cy.$("*").style({ display: "none" });
+            graphService.showCustomerData(graph, customerData);
+        }
+
+        filteroff(graph, customerData) {
+            graph.cy.$("*").style({ display: "element" });
+            graphService.showCustomerData(graph, customerData);
+        }
+
         fit(graph) {
             graph.cy.fit(30);
         }
@@ -45,7 +57,7 @@ define((require) => {
             }
         }
 
-        exitFullscreen(graph) {
+        exitfullscreen(graph) {
             (document.exitFullscreen
             || document.webkitExitFullscreen
             || document.mozExitFullScreen

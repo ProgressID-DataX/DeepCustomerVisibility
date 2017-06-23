@@ -1,6 +1,6 @@
 <div class="container-fluid">
     <div class="row search">
-        <div class="col-md-6">
+        <div class="col-md-3">
             <div class="inner-addon right-addon">
                 <i class="fa fa-search"></i>
                 <b-form-input
@@ -11,7 +11,7 @@
                 </b-form-input>
             </div>
         </div>
-        <div class="col-md-6">
+        <div class="col-md-3">
             <b-button v-if="!customer" @click="search(searchValue)">
                 Search
             </b-button>
@@ -40,6 +40,16 @@
 
     <div class="row no-gutters toolbar-container">
         <div class="toolbar col-sm-12" ref="toolbar">
+            <transition  v-if="customer" name="fade" mode="out-in">
+                <label @click="toolbar('filteron')" v-if="!isGraphFiltered" title="Toggle customer journey filtration">
+                    <span>Customer Path Only</span>
+                    <i class="fa fa-2x fa-toggle-off"></i>
+                </label>
+                <label v-else @click="toolbar('filteroff')" title="Toggle customer journey filtration">
+                    <span>Customer Path Only</span>
+                    <i class="fa fa-2x fa-toggle-on"></i>
+                </label>
+            </transition>
             <i class="fa fa-2x fa-arrow-up" title="Pan up"  @click="toolbar('panup')"></i>
             <i class="fa fa-2x fa-arrow-down" title="Pan down"  @click="toolbar('pandown')"></i>
             <i class="fa fa-2x fa-arrow-left" title="Pan left"  @click="toolbar('panleft')"></i>
@@ -49,7 +59,7 @@
             <i class="fa fa-2x fa-expand" title="Fit to view"  @click="toolbar('fit')"></i>
             <transition name="fade" mode="out-in">
                 <i class="fa fa-2x fa-arrows-alt" title="Fullscreen" v-if="!isFullScreen" @click="toolbar('fullscreen')"></i>
-                <i class="fa fa-2x fa-remove" title="Exit fullscreen" v-else @click="toolbar('exitFullscreen')"></i>
+                <i class="fa fa-2x fa-remove" title="Exit fullscreen" v-else @click="toolbar('exitfullscreen')"></i>
             </transition>
         </div>
     </div>

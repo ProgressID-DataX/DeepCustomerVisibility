@@ -66,6 +66,12 @@ html, body, #app, .container-fluid {
     z-index: 9999;
     top: 27px;
     right: 25px;
+    user-select: none;
+}
+
+.toolbar span {
+    top: -6px;
+    position: relative;
 }
 
 .toolbar i {
@@ -77,6 +83,10 @@ html, body, #app, .container-fluid {
 .toolbar i:hover {
     cursor: pointer;
     color: black;
+}
+
+.toolbar i.fa-toggle-on {
+    color: #4FC08D;
 }
 
 .graph-container {
