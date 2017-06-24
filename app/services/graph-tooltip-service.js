@@ -10,8 +10,12 @@ define((require) => {
         newLineSeparator: "</br>&nbsp;&nbsp;&nbsp;&nbsp;"
     };
 
+    let container = null;
+
     return {
         addTooltips({ graph, customerData }) {
+            container = jquery(".container-fluid");
+
             this._setNodeTips({ graph, customerData });
             this._setEdgeTips({ graph, customerData });
         },
@@ -31,6 +35,7 @@ define((require) => {
                         text: `${customersText} ${customers}${predictionText}`
                     },
                     position: {
+                        container,
                         my: "center left",
                         at: "center right"
                     },
@@ -59,6 +64,7 @@ define((require) => {
                         text: tipText
                     },
                     position: {
+                        container,
                         my: "center left",
                         at: "center right"
                     },
