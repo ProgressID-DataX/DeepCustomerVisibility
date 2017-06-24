@@ -145,8 +145,11 @@ define((require) => {
         },
 
         _addClasses({ graph, elementIds, classes, label, addNodeNumbers }) {
-            const ids = `#${elementIds.nodes.concat(elementIds.edges).join(", #")}`;
+            if (!elementIds.nodes.length && !elementIds.edges.length) {
+                return;
+            }
 
+            const ids = `#${elementIds.nodes.concat(elementIds.edges).join(", #")}`;
             const elements = graph.cy.$(ids);
 
             elements.addClass(classes);
