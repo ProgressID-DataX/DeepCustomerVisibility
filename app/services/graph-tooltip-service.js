@@ -6,9 +6,13 @@ define((require) => {
 
     cyqtip(cytoscape, jquery);
 
+    const consts = {
+        newLineSeparator: "</br>&nbsp;&nbsp;&nbsp;&nbsp;"
+    };
+
     return {
         addTooltips({ graph, customerData }) {
-            this._setNodeTips({ graph });
+            this._setNodeTips({ graph, customerData });
             this._setEdgeTips({ graph, customerData });
         },
 
@@ -16,6 +20,7 @@ define((require) => {
             _.forEach(graph.cy.edges(), (edge) => {
                 const sourceNode = graph.data.nodes[edge.data().source].name;
                 const targetNode = graph.data.nodes[edge.data().target].name;
+
                 const customersText = `<b>Customers</b>:`;
                 const customers = edge.data().customers;
                 const predictionText = this._getPredictionText({ graph, customerData, edge });
@@ -23,7 +28,7 @@ define((require) => {
                 edge.qtip({
                     content: {
                         title: `${sourceNode} &#x21E8; ${targetNode}`,
-                        text: `${customersText} ${customers} ${predictionText}`
+                        text: `${customersText} ${customers}${predictionText}`
                     },
                     position: {
                         my: "center left",
@@ -37,14 +42,16 @@ define((require) => {
             });
         },
 
-        _setNodeTips({ graph }) {
+        _setNodeTips({ graph, customerData }) {
             _.forEach(graph.cy.nodes(), (node) => {
                 const isStartNode = node.data().id === "A";
                 const elements = isStartNode ? node.connectedEdges() : node.incomers();
                 const edges = _.filter(elements, (element) => element.isEdge());
+
                 const customersSourceString = this._getEdgesSourcesAsString({ graph, edges });
                 const customers = this._getPassingCustomersNumber({ edges });
-                const tipText = this._getNodeTipText({ isStartNode, customers, customersSourceString });
+                const customerActivity = this._getCustomerActivityText({ graph, customerData, node });
+                const tipText = this._getNodeTipText({ isStartNode, customers, customerActivity, customersSourceString });
 
                 node.qtip({
                     content: {
@@ -73,7 +80,7 @@ define((require) => {
 
         _getEdgesSourcesAsString({ graph, edges }) {
             let customersSourceString = "";
-            const separator = "</br>&nbsp;&nbsp;&nbsp;&nbsp;";
+            const separator = consts.newLineSeparator;
 
             _.forEach(edges, (edge) => {
                 customersSourceString += separator + graph.data.nodes[edge.data().source].name;
@@ -82,9 +89,9 @@ define((require) => {
             return customersSourceString;
         },
 
-        _getNodeTipText({ isStartNode, customers, customersSourceString }) {
+        _getNodeTipText({ isStartNode, customers, customerActivity, customersSourceString }) {
             const explainingText = `</br></br><small><b>*</b> This is the number of passings throught the nodes.</small>`;
-            const basicText = `<b>Customers</b>:* ${customers}`;
+            const basicText = `<b>Customers</b>:* ${customers}${customerActivity}`;
             const extendedText = `${basicText}</br><b>Sources</b>:${customersSourceString}`;
             let tipText = isStartNode ? basicText : extendedText;
             tipText += explainingText;
@@ -93,6 +100,10 @@ define((require) => {
         },
 
         _getPredictionText({ graph, customerData, edge }) {
+            if (!customerData) {
+                return "";
+            }
+
             let predictionText = "";
 
             const prediction = graph.data.links[edge.data().id].prediction;
@@ -109,6 +120,31 @@ define((require) => {
             }
 
             return predictionText;
+        },
+
+        _getCustomerActivityText({ graph, customerData, node }) {
+            if (!customerData) {
+                return "";
+            }
+
+            const nodeId = node.data().id;
+            const customerActivity = _.filter(customerData.journey.slice(1).reverse(),
+                (stateData) => stateData.state === nodeId);
+
+            if (!customerActivity.length) {
+                return "";
+            }
+
+            let customerActivityText = `</br><b>CustomerActivity (Total ${customerActivity.length}) :</b>`;
+
+            _(customerActivity)
+                .take(5)
+                .forEach((stateData) => {
+                    const date = new Date(stateData.date);
+                    customerActivityText += `${consts.newLineSeparator}on ${date.toLocaleString()}`;
+                });
+
+            return customerActivityText;
         }
     };
 });

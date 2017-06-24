@@ -107,7 +107,18 @@ define((require) => {
             graph.cy.add(allNodesData.concat(allEdgesData));
         },
 
-        showCustomerData(graph, { journey, predictions }) {
+        showCustomerData(graph, data) {
+            graphTooltipService.addTooltips({
+                graph,
+                customerData: data
+            });
+
+            if (!data) {
+                return;
+            }
+
+            const { journey, predictions } = data;
+
             this._addClasses({
                 graph,
                 elementIds: this._getElementIdsForCustomerPath(journey),
@@ -126,11 +137,6 @@ define((require) => {
                 }),
                 classes: "prediction",
                 label: "probability"
-            });
-
-            graphTooltipService.addTooltips({
-                graph,
-                customerData: { journey, predictions }
             });
         },
 
