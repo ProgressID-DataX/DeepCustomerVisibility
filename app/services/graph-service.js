@@ -155,7 +155,7 @@ define((require) => {
                 _.forEach(elementIds.edges, (edgeId) => {
                     const element = graph.cy.$(`#${edgeId}`);
                     const labelValue = graph.data.links[edgeId].prediction[label];
-                    const labelText = `${labelValue.toFixed(2) * 100}%`;
+                    const labelText = `${Math.round(labelValue * 100)}%`;
 
                     element.style({ label: labelText });
                 });
