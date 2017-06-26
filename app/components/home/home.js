@@ -15,7 +15,8 @@ define((require) => {
                 isFullScreen: false,
                 isGraphFiltered: false,
                 _graphInstance: null,
-                _graphToolbar: null
+                _graphToolbar: null,
+                _ready: null
             };
         },
 
@@ -55,8 +56,8 @@ define((require) => {
                 this._updateQuery();
             },
 
-            toolbar(action, customerData) {
-                graphUtilsService[action](this._graphInstance, customerData === undefined ? this.customerData : customerData);
+            toolbar(action) {
+                graphUtilsService[action](this._graphInstance, this.customerData);
 
                 switch (action) {
                     case "filteron":
@@ -83,24 +84,28 @@ define((require) => {
             },
 
             _search(email) {
-                if (email) {
-                    dataService.getJourneyByEmail(email)
-                        .then((data) => {
-                            if (data.error) {
+                this._ready.then(() => {
+                    if (email) {
+                        dataService.getJourneyByEmail(email)
+                            .then((data) => {
+                                if (data.error) {
+                                    this.errorSearch = true;
+
+                                    return;
+                                }
+
+                                this.customerData = data.customer;
+                                this.searchValue = this.customerFullName;
+                            })
+                            .catch(() => {
                                 this.errorSearch = true;
-
-                                return;
-                            }
-
-                            this.customerData = data.customer;
-                            this.searchValue = this.customerFullName;
-                        })
-                        .catch(() => {
-                            this.errorSearch = true;
-                        });
-                } else {
-                    this.toolbar("filteroff", null);
-                }
+                            });
+                    } else {
+                        this.errorSearch = false;
+                        this.searchValue = "";
+                        this.customerData = null;
+                    }
+                });
             },
 
             _updateQuery(email) {
@@ -136,10 +141,8 @@ define((require) => {
                     graphUtilsService.delayedFit(this._graphInstance);
                 }
             };
-        },
 
-        mounted() {
-            dataService.getJourney()
+            this._ready = dataService.getJourney()
                 .then((data) => {
                     this._graphInstance = graphService
                         .createGraph(this.$refs.graph, this.$refs.toolbar, data.graph);
