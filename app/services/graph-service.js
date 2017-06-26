@@ -74,35 +74,14 @@ define((require) => {
             return graph;
         },
 
-        reinitGraph(graph, data) {
-            if (!data) {
+        reinitGraph(graph, customerData) {
+            if (!customerData) {
                 graph.cy.json(graphJson);
 
                 return;
             }
 
-            const { journey, predictions } = data;
-
-            const original = this._getElementIdsForCustomerPath(journey);
-
-            const leadLastState = _.last(journey).state;
-
-            const predicted = this._getElementIdsForCustomerPredictedPath({
-                graph,
-                states: predictions,
-                initialNodeId: leadLastState
-            });
-
-            const allNodes = _.uniq(original.nodes.concat(predicted.nodes));
-            const allEdges = _.uniq(original.edges.concat(predicted.edges));
-            const allNodesData = _.map(allNodes, (node) => ({
-                group: "nodes",
-                data: graph.data.nodes[node]
-            }));
-            const allEdgesData = _.map(allEdges, (edge) => ({
-                group: "edges",
-                data: graph.data.links[edge]
-            }));
+            const { allNodesData, allEdgesData } = this._getAllNodesAndAllEdgesForCustomer(graph, customerData);
 
             graph.cy.add(allNodesData.concat(allEdgesData));
         },
@@ -140,8 +119,23 @@ define((require) => {
             });
         },
 
-        reset(graph) {
-            graph.cy.$("*").remove();
+        reset(graph, customerData) {
+            const elements = graph.cy.$("*");
+
+            if (!customerData) {
+                elements.remove();
+
+                return;
+            }
+
+            const { allNodes, allEdges } = this._getAllNodesAndAllEdgesForCustomer(graph, customerData);
+            const allCustomerElementIds = allNodes.concat(allEdges);
+
+            _.forEach(elements, (element) => {
+                if (!_.includes(allCustomerElementIds, element.data().id)) {
+                    element.remove();
+                }
+            });
         },
 
         _addClasses({ graph, elementIds, classes, label, addNodeNumbers }) {
@@ -173,6 +167,39 @@ define((require) => {
                     element.style({ label: labelText });
                 });
             }
+        },
+
+        _getAllNodesAndAllEdgesForCustomer(graph, customerData) {
+            const { journey, predictions } = customerData;
+
+            const original = this._getElementIdsForCustomerPath(journey);
+
+            const leadLastState = _.last(journey).state;
+
+            const predicted = this._getElementIdsForCustomerPredictedPath({
+                graph,
+                states: predictions,
+                initialNodeId: leadLastState
+            });
+
+            const allNodes = _.uniq(original.nodes.concat(predicted.nodes));
+            const allEdges = _.uniq(original.edges.concat(predicted.edges));
+
+            const allNodesData = _.map(allNodes, (node) => ({
+                group: "nodes",
+                data: graph.data.nodes[node]
+            }));
+            const allEdgesData = _.map(allEdges, (edge) => ({
+                group: "edges",
+                data: graph.data.links[edge]
+            }));
+
+            return {
+                allNodes,
+                allEdges,
+                allNodesData,
+                allEdgesData
+            };
         },
 
         _getElementIdsForCustomerPath(states) {

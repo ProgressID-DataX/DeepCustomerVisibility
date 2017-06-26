@@ -27,7 +27,7 @@ define((require) => {
         }
 
         filteron(graph, customerData) {
-            graphService.reset(graph);
+            graphService.reset(graph, customerData);
             graphService.reinitGraph(graph, customerData);
             graphService.showCustomerData(graph, customerData);
 
@@ -43,9 +43,7 @@ define((require) => {
         }
 
         fit(graph) {
-            const layout = graph.cy.layout({ name: "grid" });
-
-            layout.run();
+            graph.cy.fit(30);
         }
 
         delayedFit(graph) {
