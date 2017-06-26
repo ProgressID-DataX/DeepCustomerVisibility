@@ -44,32 +44,19 @@ define((require) => {
             search(email) {
                 this.errorSearch = false;
 
-                if (email) {
-                    dataService.getJourneyByEmail(email)
-                        .then((data) => {
-                            if (data.error) {
-                                this.errorSearch = true;
-
-                                return;
-                            }
-
-                            this.customerData = data.customer;
-                            this.searchValue = this.customerFullName;
-                        })
-                        .catch(() => {
-                            this.errorSearch = true;
-                        });
-                }
+                this._updateQuery(email);
             },
 
             clearSearch() {
                 this.errorSearch = false;
                 this.searchValue = "";
                 this.customerData = null;
+
+                this._updateQuery();
             },
 
-            toolbar(action) {
-                graphUtilsService[action](this._graphInstance, this.customerData);
+            toolbar(action, customerData) {
+                graphUtilsService[action](this._graphInstance, customerData === undefined ? this.customerData : customerData);
 
                 switch (action) {
                     case "filteron":
@@ -93,6 +80,37 @@ define((require) => {
                 return (document.fullScreenElement && document.fullScreenElement !== null)
                     || document.mozFullScreen
                     || document.webkitIsFullScreen;
+            },
+
+            _search(email) {
+                if (email) {
+                    dataService.getJourneyByEmail(email)
+                        .then((data) => {
+                            if (data.error) {
+                                this.errorSearch = true;
+
+                                return;
+                            }
+
+                            this.customerData = data.customer;
+                            this.searchValue = this.customerFullName;
+                        })
+                        .catch(() => {
+                            this.errorSearch = true;
+                        });
+                } else {
+                    this.toolbar("filteroff", null);
+                }
+            },
+
+            _updateQuery(email) {
+                const route = { path: "/home" };
+
+                if (email) {
+                    route.query = { email };
+                }
+
+                Vue.$router.push(route);
             }
         },
 
@@ -126,6 +144,16 @@ define((require) => {
                     this._graphInstance = graphService
                         .createGraph(this.$refs.graph, this.$refs.toolbar, data.graph);
                 });
+        },
+
+        beforeRouteEnter(to, from, next) {
+            next(vm => vm._search(to.query.email));
+        },
+
+        beforeRouteUpdate(to, from, next) {
+            this._search(to.query.email);
+
+            next();
         }
     };
 });

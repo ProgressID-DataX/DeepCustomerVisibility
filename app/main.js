@@ -13,5 +13,5 @@ define((require) => {
         ]
     });
 
-    new Vue({ router }).$mount("#app");
+    window.Vue = new Vue({ router }).$mount("#app");
 });
