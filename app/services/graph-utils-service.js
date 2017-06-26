@@ -27,19 +27,18 @@ define((require) => {
         }
 
         filteron(graph, customerData) {
+            graphService.reset(graph);
+            graphService.reinitGraph(graph);
+
             graphService.reset(graph, customerData);
             graphService.reinitGraph(graph, customerData);
             graphService.showCustomerData(graph, customerData);
-
-            this.fit(graph);
         }
 
         filteroff(graph, customerData) {
             graphService.reset(graph);
             graphService.reinitGraph(graph);
             graphService.showCustomerData(graph, customerData);
-
-            this.fit(graph);
         }
 
         fit(graph) {
