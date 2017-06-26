@@ -5,6 +5,7 @@ html, body, #app, .container-fluid {
     min-height: 600px;
     margin: 0 auto;
     padding: 0;
+    background-color: white;
 }
 
 #app .navbar {
